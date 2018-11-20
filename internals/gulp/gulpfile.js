@@ -30,7 +30,7 @@ Did you call process.chdir() properly?`);
 
 const paths = {
   lib: path.resolve(ROOT_PATH, 'lib'),
-  src: path.resolve(ROOT_PATh, 'src'),
+  src: path.resolve(ROOT_PATH, 'src'),
 };
 
 const buildLog = (tag, ...args) => {
