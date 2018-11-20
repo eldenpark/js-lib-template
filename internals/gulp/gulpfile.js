@@ -14,8 +14,24 @@ const ts = require('gulp-typescript');
 const util = require('util');
 
 const babelRc = require('./.babelrc');
-const paths = require('../../src/paths');
 const tsConfig = require('./tsconfig');
+
+const ROOT_PATH = (function(currentWorkingDirectory) {
+  const rootPath = fs.realpathSync(currentWorkingDirectory);
+  const pJson = fs.existsSync(`${rootPath}/package.json`);
+  if (!pJson) {
+    console.error(
+`Current working directory might not be the project root directory.
+Did you call process.chdir() properly?`);
+    process.exit(0);
+  }
+  return rootPath;
+})(process.cwd());
+
+const paths = {
+  lib: path.resolve(ROOT_PATH, 'lib'),
+  src: path.resolve(ROOT_PATh, 'src'),
+};
 
 const buildLog = (tag, ...args) => {
   console.info(chalk.cyan(`[build - ${tag}]`), util.format(...args));
@@ -27,25 +43,6 @@ const Task = {
   CLEAN: 'clean',
   TSC: 'tsc',
 };
-
-/**
- * Currently not used, mainly because gulp-typescript does not support `emitDeclarationOnly`.
- */
-// gulp.task(Task.BABEL, () => {
-//   buildLog(
-//     Task.BABEL,
-//     'NODE_ENV: %s, LIB_PATH: %s, SRC_PATH: %s',
-//     process.env.NODE_ENV, 
-//     paths.lib,
-//     paths.src,
-//   );
-
-//   return gulp.src([`${paths.src}/**/*.{js,jsx,ts,tsx}`])
-//     .pipe(sourcemaps.init())
-//     .pipe(babel(babelRc))
-//     .pipe(sourcemaps.write('.'))
-//     .pipe(gulp.dest(paths.lib));
-// });
 
 gulp.task(Task.CLEAN, () => {
   buildLog(Task.CLEAN, 'LIB_PATH: %s', paths.lib);
