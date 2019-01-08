@@ -53,7 +53,7 @@ gulp.task(Task.CLEAN, () => {
 });
 
 gulp.task(Task.TSC, gulp.series(Task.CLEAN, function _tsc(done) {
-  buildLog('tsc config: %o', tsConfig.compilerOptions);
+  buildLog(Task.TSC, 'tsconfig: %o', tsConfig.compilerOptions);
   const tsProject = ts.createProject(tsConfig.compilerOptions);
 
   return gulp.src([`${paths.src}/**/*.{ts,tsx}`])
